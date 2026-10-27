@@ -88,10 +88,20 @@ for i in range(10):
  add('조경재료','재료 체적',f'길이 {length}m, 폭 {width}m의 직사각형 공간에 두께 10cm로 재료를 균일하게 깐다. 다짐·손실·공극 변화가 없다는 조건에서 필요한 체적은?',[f'{x:g}m³' for x in [result,result*10,result*2,result/2]],1,f'두께 10cm = 0.1m이다. 체적 = 길이 × 폭 × 두께 = {length} × {width} × 0.1 = {result:g}m³이다. 이 문항은 단순 체적 계산이며 실제 할증이나 다짐 계수는 반영하지 않는다.',family='material-volume',calculation=dict(kind='volume',values=[length,width,10],result=result,unit='m³'))
  rise=i+1; run=100; result=rise
  add('조경시공 및 관리','경사 계산',f'수평 거리 {run}m 구간에서 높이 차가 {rise}m이다. 경사율(%)은?',[f'{x:g}%' for x in [result,result*10,result/10,result+1]],1,f'경사율(%) = 높이 차 ÷ 수평 거리 × 100이다. {rise} ÷ {run} × 100 = {result}%이다. 경사각의 도(°)와 경사율의 퍼센트는 서로 다른 표현이다.',family='slope-percent',calculation=dict(kind='slope',values=[rise,run],result=result,unit='%'))
+# Append-only expansion: IDs LA-0001 through LA-0090 retain their exact content.
+subject=''
+for line in (ROOT/'scripts/expanded-concepts.txt').read_text().splitlines():
+ if line.startswith('['): subject=line[1:-1]
+ elif line:
+  topic,stem,correct,others,explanation=line.split('|')
+  add(subject,topic,stem,[correct]+others.split('/'),1,explanation)
+import runpy
+runpy.run_path(str(ROOT/'scripts/expanded-calculations.py'))['expand'](add)
+assert len(bank)==1000
 (ROOT/'src/data/questions.json').write_text(json.dumps(bank,ensure_ascii=False,indent=2)+'\n')
 q=dict(bank[0],id='LOCAL-EXAMPLE',topic='축척 계산 양식',question='축척 1:200 도면에서 길이가 2cm이다. 실제 길이를 m로 환산하면?',choices=['4m','2m','40m','400m'],answer=1,explanation='실제 길이 = 2cm × 200 = 400cm = 4m이다. 도면 길이에 축척의 분모를 곱한 뒤 cm를 m로 환산한다.',verificationStatus='pending',reviewNote='가져오기 양식 예시. 학습에 사용하려면 직접 정답과 권리를 확인한 후 로컬 승인하세요.')
 (ROOT/'public/templates/questions.json').write_text(json.dumps([q],ensure_ascii=False,indent=2)+'\n')
 keys=['id','subject','topic','question','choice1','choice2','choice3','choice4','answer','explanation','difficulty','year','session','type','sourceUrl','verificationStatus','reviewNote','version','rights']
 with (ROOT/'public/templates/questions.csv').open('w',newline='') as f:
  w=csv.DictWriter(f,fieldnames=keys);w.writeheader();row={k:q.get(k,'') for k in keys};row.update({f'choice{i+1}':c for i,c in enumerate(q['choices'])});w.writerow(row)
-print(f'{len(bank)} originals: 60 concepts, 3 numerical families × 10 conditions')
+print(f'{len(bank)} originals: 160 concepts; 840 numeric variants in 30 families')
