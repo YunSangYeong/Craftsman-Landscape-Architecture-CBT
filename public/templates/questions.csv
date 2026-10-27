@@ -1,0 +1,2 @@
+id,subject,topic,question,choice1,choice2,choice3,choice4,answer,explanation,difficulty,year,session,type,sourceUrl,verificationStatus,reviewNote,version,rights
+LOCAL-EXAMPLE,조경일반,축척 계산 양식,축척 1:200 도면에서 길이가 2cm이다. 실제 길이를 m로 환산하면?,4m,2m,40m,400m,1,실제 길이 = 2cm × 200 = 400cm = 4m이다. 도면 길이에 축척의 분모를 곱한 뒤 cm를 m로 환산한다.,하,,,original,https://github.com/YunSangYeong/Craftsman-Landscape-Architecture-CBT,pending,가져오기 양식 예시. 학습에 사용하려면 직접 정답과 권리를 확인한 후 로컬 승인하세요.,main,자체 제작 학습 자료 · CC BY 4.0. 저장소 주소는 작성 위치이며 외부 정답 증빙이 아님.
